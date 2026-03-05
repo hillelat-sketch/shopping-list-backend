@@ -1,0 +1,31 @@
+{
+  "name": "shopping-list-backend",
+  "version": "1.0.0",
+  "description": "Backend for shopping list app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "@supabase/supabase-js": "^2.38.0"
+  }
+}
+```
+
+3. **לחצו "Commit changes"**
+
+---
+
+## **קובץ 2: `.env`**
+
+1. **שוב "Add file" → "Create new file"**
+2. **שם הקובץ:** `.env`
+3. **תעתיקו:**
+```
+SUPABASE_URL=https://spojjumekkjlhenqwysx.supabase.co
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwb2pqdW1la2tqbGhlbnF3eXN4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjczMDAwNywiZXhwIjoyMDg4MzA2MDA3fQ.Vd5FtS-hQdv7MmxCeH4KDD_VfORIxr_stMagDBR1Bto
+PORT=3000
