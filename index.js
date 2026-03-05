@@ -64,8 +64,9 @@ app.post('/api/users/init', async (req, res) => {
 
       // Create default list
       await supabase
-        .from('shopping_lists')
-        .insert([{ user_id: userId }]);
+      .from('shopping_lists')
+      .insert([{ user_id: userId, is_active: true }]);
+
     }
 
     res.json({ success: true, userId });
