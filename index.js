@@ -20,17 +20,37 @@ app.post('/api/users/init', async (req, res) => {
     const { data: existing } = await supabase.from('users').select('id').eq('id', userId).maybeSingle();
 
     if (!existing) {
-      await supabase.from('users').insert([{ id: userId }]);
+      const { error: userErr } = await supabase.from('users').insert([{ id: userId }]);
+      if (userErr) throw userErr;
+
       const cats = ['קפואים','חלבי','שימורים','יבשים','חטיפים','משקאות','אחר'];
       for (let i = 0; i < cats.length; i++) {
         await supabase.from('categories').insert([{ user_id: userId, name: cats[i], order_index: i }]);
       }
-      await supabase.from('shopping_lists').insert([{ user_id: userId, is_active: true }]);
     }
 
-    const { data: list } = await supabase.from('shopping_lists').select('id').eq('user_id', userId).order('created_at', { ascending: false }).limit(1).maybeSingle();
-    res.json({ success: true, userId, listId: list?.id });
+    // Find existing list or create new one
+    let { data: list } = await supabase
+      .from('shopping_lists')
+      .select('id')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!list) {
+      const { data: newList, error: listErr } = await supabase
+        .from('shopping_lists')
+        .insert([{ user_id: userId, name: 'רשימת קניות', is_active: true }])
+        .select('id')
+        .single();
+      if (listErr) throw listErr;
+      list = newList;
+    }
+
+    res.json({ success: true, userId, listId: list.id });
   } catch (error) {
+    console.error('init error:', error);
     res.status(500).json({ error: error.message });
   }
 });
